@@ -1,0 +1,31 @@
+import rasterio
+from .models import CFARDetector
+from .postprocessing import cluster_detections
+
+class IcebergDetectionPipeline:
+    """
+    Nature: End-to-End Pipeline.
+    Aim: Load processed TIF -> Detect Pixels -> Extract Iceberg Objects.
+    Application: This is what the main.py or Streamlit app calls.
+    """
+    def __init__(self, detector=None):
+        self.detector = detector or CFARDetector()
+
+    def run(self, image_path: str) -> List[Dict]:
+        with rasterio.open(image_path) as src:
+            image_data = src.read(1)
+            transform = src.transform
+            
+            # 1. Run Detector
+            mask = self.detector.predict(image_data)
+            
+            # 2. Group pixels into objects
+            raw_icebergs = cluster_detections(mask)
+            
+            # 3. Convert Pixel coordinates to Latitude/Longitude
+            for berg in raw_icebergs:
+                lon, lat = rasterio.transform.xy(transform, berg["pixel_coords"][1], berg["pixel_coords"][0])
+                berg["latitude"] = lat
+                berg["longitude"] = lon
+                
+        return raw_icebergs
