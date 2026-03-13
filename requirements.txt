@@ -1,16 +1,20 @@
 sentinelhub==3.11.1
-shapely==2.1.0
-geopandas==1.1.1
 numpy==2.3.0
-pandas==3.0.1
-langchain==1.2.0
+pandas>=2.0.0,<3.0.0
+geopandas==1.1.1
+shapely==2.1.0
+rasterio==1.4.3
+scipy==1.17.1
+
 streamlit==1.54.0
 python-dotenv==1.2.2
 requests==2.32.5
-rasterio==1.4.3
-openai
-langchain
-pinecone-client
-streamlit
 
+langchain==1.2.0
+langchain-core>=1.2.18,<2.0.0
+langchain-openai==1.1.11
+openai==2.26.0
+
+pinecone-client==6.0.0
+pydantic==2.12.0
 

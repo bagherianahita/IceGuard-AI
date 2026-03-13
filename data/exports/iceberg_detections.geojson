@@ -1,0 +1,365 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.6769375,
+          44.4246583984375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_000",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.4189375,
+          44.4246583984375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_001",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -53.373737500000004,
+          44.6195927734375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_002",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.1157375,
+          44.6195927734375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_003",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -52.0705375,
+          44.8145271484375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_004",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.0253375,
+          45.0094615234375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_005",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.767337500000004,
+          45.0094615234375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_006",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -52.7221375,
+          45.2043958984375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_007",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.6769375,
+          45.3993302734375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_008",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.4189375,
+          45.3993302734375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_009",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -53.373737500000004,
+          45.5942646484375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_010",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.1157375,
+          45.5942646484375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_011",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -52.0705375,
+          45.7891990234375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_012",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.0253375,
+          45.9841333984375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_013",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.767337500000004,
+          45.9841333984375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_014",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -52.7221375,
+          46.1790677734375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_015",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.6769375,
+          46.3740021484375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_016",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -51.4189375,
+          46.3740021484375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_017",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -53.373737500000004,
+          46.5689365234375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_018",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.1157375,
+          46.5689365234375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_019",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -52.0705375,
+          46.7638708984375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_020",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -54.0253375,
+          46.9588052734375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_021",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -50.767337500000004,
+          46.9588052734375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_022",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -52.7221375,
+          47.1537396484375
+        ]
+      },
+      "properties": {
+        "iceberg_id": "ice_023",
+        "confidence": 0.9999999403953552,
+        "size_sq_m": 5000.0
+      }
+    }
+  ]
+}

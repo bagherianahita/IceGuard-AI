@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List, Mapping, Optional, Sequence, Union
+from typing import Any, Dict, List, Mapping, Sequence, Union
 
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable
@@ -20,6 +20,10 @@ except ImportError:  # pragma: no cover - fallback for older LangChain versions
 
 
 JsonDict = Dict[str, Any]
+
+
+class MaritimeSafetyAdvisoryError(RuntimeError):
+    """Domain-specific error for LLM-based maritime safety advisory failures."""
 
 
 @dataclass(frozen=True)
@@ -137,7 +141,7 @@ def _parse_model_output(raw_text: str) -> JsonDict:
         return json.loads(raw_text)
     except json.JSONDecodeError as exc:
         LOGGER.exception("LLM response is not valid JSON: %s", raw_text)
-        raise ValueError("LLM response is not valid JSON.") from exc
+        raise MaritimeSafetyAdvisoryError("LLM response is not valid JSON.") from exc
 
 
 def _validate_coordinate_integrity(
@@ -148,36 +152,45 @@ def _validate_coordinate_integrity(
 
     This guardrail enforces that:
     - The 'coordinates_used_verbatim' field exists.
-    - It has the same length as the original coordinate list.
-    - Each coordinate pair matches the original values within a tight tolerance.
+    - Each coordinate pair in that list matches one of the original coordinates
+      within a tight tolerance.
+    - The model is allowed to return a subset of the original coordinates,
+      but is strictly forbidden from introducing new coordinates.
     """
     epsilon = 1e-5
 
     used_coords = model_output.get("coordinates_used_verbatim")
     if not isinstance(used_coords, list):
-        raise ValueError("Guardrail violation: 'coordinates_used_verbatim' is missing or not a list.")
-
-    if len(used_coords) != len(original_coordinates):
-        raise ValueError(
-            "Guardrail violation: the number of coordinates used by the model "
-            "does not match the input."
+        raise MaritimeSafetyAdvisoryError(
+            "Guardrail violation: 'coordinates_used_verbatim' is missing or not a list."
         )
 
-    for idx, (orig, used) in enumerate(zip(original_coordinates, used_coords)):
+    # Precompute original coordinates as simple (lat, lon) tuples for comparison.
+    original_pairs = [
+        (float(coord["lat"]), float(coord["lon"])) for coord in original_coordinates
+    ]
+
+    for idx, used in enumerate(used_coords):
         if not isinstance(used, Mapping) or "lat" not in used or "lon" not in used:
-            raise ValueError(
+            raise MaritimeSafetyAdvisoryError(
                 f"Guardrail violation: coordinate at index {idx} in 'coordinates_used_verbatim' "
                 "is malformed."
             )
 
-        d_lat = abs(float(orig["lat"]) - float(used["lat"]))
-        d_lon = abs(float(orig["lon"]) - float(used["lon"]))
+        used_lat = float(used["lat"])
+        used_lon = float(used["lon"])
 
-        if d_lat > epsilon or d_lon > epsilon:
-            raise ValueError(
-                "Guardrail violation: model-modified coordinates detected. "
-                f"Index {idx}: original=({orig['lat']}, {orig['lon']}), "
-                f"used=({used['lat']}, {used['lon']})."
+        # Check that this used coordinate matches at least one of the originals.
+        matches_original = any(
+            abs(orig_lat - used_lat) <= epsilon and abs(orig_lon - used_lon) <= epsilon
+            for orig_lat, orig_lon in original_pairs
+        )
+
+        if not matches_original:
+            raise MaritimeSafetyAdvisoryError(
+                "Guardrail violation: model-introduced coordinate detected. "
+                f"Index {idx}: used=({used_lat}, {used_lon}) is not present in the input "
+                "within the allowed tolerance."
             )
 
 
@@ -218,8 +231,9 @@ def generate_maritime_safety_advisory(
         A dictionary representing the validated advisory JSON.
 
     Raises:
-        ValueError: If the input payload is invalid, the model output is invalid,
-            or the guardrail detects coordinate hallucination.
+        ValueError: If the input payload is invalid.
+        MaritimeSafetyAdvisoryError: If the model output is invalid or the
+            guardrail detects coordinate hallucination.
     """
     report_input = IcebergReportInput.from_payload(payload)
     input_json_str = json.dumps(
@@ -249,6 +263,7 @@ def generate_maritime_safety_advisory(
 
 __all__ = [
     "IcebergReportInput",
+    "MaritimeSafetyAdvisoryError",
     "generate_maritime_safety_advisory",
     "build_maritime_safety_chain",
 ]

@@ -1,5 +1,32 @@
 import streamlit as st
 
+
+def show_view() -> None:
+    """Display the maritime safety report view."""
+    st.title("Maritime Safety Report")
+
+    report = st.session_state.get("report")
+    if report is None:
+        st.info("No safety report has been generated yet. Use 'Sync Satellite Data' to run the analysis.")
+        return
+
+    st.subheader("Risk Level")
+    risk_level = report.get("risk_level", "N/A")
+    st.write(f"**Risk Level**: {risk_level}")
+
+    narrative = report.get("summary") or report.get("narrative_summary")
+    if narrative:
+        st.subheader("Summary")
+        st.write(narrative)
+
+    actions = report.get("recommended_actions", [])
+    if actions:
+        st.subheader("Recommended Actions")
+        for action in actions:
+            st.markdown(f"- {action}")
+
+import streamlit as st
+
 def show_view():
     st.title("📝 Maritime Safety Report")
     

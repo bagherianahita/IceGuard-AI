@@ -1,6 +1,9 @@
 import streamlit as st
+
 from frontend.state import init_state
 from frontend.views import operational_overview, report_builder
+from main import run_pipeline_for_aoi
+
 
 init_state()
 
@@ -14,9 +17,40 @@ if page == "Overview":
 else:
     report_builder.show_view()
 
+
+def _normalize_detections_for_ui(raw_detections):
+    """Map internal detection dictionaries to the UI-friendly schema."""
+    normalized = []
+    for idx, det in enumerate(raw_detections):
+        lat = det.get("lat", det.get("latitude"))
+        lon = det.get("lon", det.get("longitude"))
+        if lat is None or lon is None:
+            continue
+
+        iceberg_id = det.get("iceberg_id") or f"ice_{idx:03d}"
+        size_sq_m = det.get("size_m2", det.get("size_sq_m"))
+
+        normalized.append(
+            {
+                "iceberg_id": iceberg_id,
+                "latitude": float(lat),
+                "longitude": float(lon),
+                "confidence": float(det.get("confidence", 0.0)),
+                "size_sq_m": float(size_sq_m) if size_sq_m is not None else None,
+            }
+        )
+    return normalized
+
+
 # Sidebar Action Button
 if st.sidebar.button("🚀 Sync Satellite Data"):
-    # Trigger the main.py logic here
-    st.session_state.detections = [{"iceberg_id": "IB-01", "latitude": 47.1, "longitude": -52.5, "confidence": 0.95}]
-    st.session_state.report = {"risk_level": "High", "summary": "Ice detected.", "recommended_actions": ["Slow down"]}
-    st.rerun()
+    with st.spinner("Processing SAR Data & Generating AI Safety Report..."):
+        try:
+            result = run_pipeline_for_aoi()
+            raw_detections = result.get("detections", [])
+            st.session_state.detections = _normalize_detections_for_ui(raw_detections)
+            st.session_state.report = result.get("report")
+            st.success("Pipeline completed successfully.")
+        except Exception as exc:
+            st.error(f"Pipeline failed: {exc}")
+        st.rerun()

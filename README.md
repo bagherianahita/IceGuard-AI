@@ -14,7 +14,7 @@ The project structure and architecture below are intentionally modular to suppor
 
 
 I built this as a Modular Monolith to ensure rapid iteration and easy debugging during the prototype phase. 
-However, I designed the data contracts (GeoJSON/Parquet) so that we could easily migrate the Detection Engine to a Microservice or an Event-Driven pipeline once we need to scale for real-time North Atlantic monitoring.
+However, I will designe the data contracts (GeoJSON/Parquet) so that we could easily migrate the Detection Engine to a Microservice or an Event-Driven pipeline once we need to scale for real-time North Atlantic monitoring.
 
 
 
@@ -44,9 +44,8 @@ These components are loosely coupled via **clear data contracts** (e.g., well‑
 
 Intended top‑level layout:
 
-- .env`**
+- **`.env`**
   - Central configuration (API keys, index names, provider settings, etc.).
-    
 
 - **`requirements.txt`**
   -  Python dependencies for reproducibility, including `sentinelhub`, `shapely`, `geopandas`, `langchain`, and `streamlit`.
@@ -137,7 +136,7 @@ Intended top‑level layout:
   - (Future) Provider‑specific LLM SDKs (e.g., OpenAI, Anthropic, Azure, etc.).
 
 - **Frontend & Delivery**
-  - `streamlit`   for operators and analysts.
+  - `streamlit` – Streamlit-based UI for operators and analysts.
 
 - **Utilities**
   - `python-dotenv`, `requests`, and related helpers for configuration and HTTP integrations.
@@ -155,7 +154,7 @@ pip install -r requirements.txt
 ```
 
 2. **Configuration**
-   - Populate `config.yaml`   a `.env` file with:
+   - Populate `config.yaml` or a `.env` file with:
      - Sentinel Hub credentials.
      - LLM provider API keys.
      - Storage locations / buckets.
@@ -180,56 +179,3 @@ streamlit run frontend/app.py
 - Add continuous monitoring and alerting (email/SMS/webhooks) for high‑risk detections.
 - Introduce model evaluation dashboards (precision/recall vs. validated ground truth).
 - Support batch and near‑real‑time modes to match operational constraints.
-
-# LLM-Driven Market Intelligence Tool
-
-A market insights generator for a fintech startup that analyzes competitor **press releases, news, and filings** in near real-time.  
-Built with **OpenAI GPT-4, LangChain, Pinecone, and Streamlit**.
-
----
-
-##  Features
-- Automated **scraping** of competitor press releases and news.
-- **Vector embeddings** stored in Pinecone for fast similarity search.
-- **Retrieval-Augmented Generation (RAG)** to ground GPT-4 outputs in verified sources.
-- Interactive **Streamlit dashboard** for product & marketing teams.
-- Automated synchronization jobs to ensure **fresh data**.
-
----
-
-##  Project Structure
-│── app.py # Streamlit dashboard
-│── src/ # Pipeline modules
-│── requirements.txt # Python dependencies
-│── config.yaml # Config (API keys, Pinecone index, etc.)
-
-LangChain: A framework designed to help developers build applications using Large Language Models. It provides tools to connect LLMs to other data sources and services.
-Pinecone: A specialized database designed for storing and searching vector embeddings. It is optimized for finding similar data points very quickly.
-Streamlit: An open-source framework for building interactive web applications for data science and machine learning.
-
-
-##  (Installation)
-for implementing *IceGuard AI* follow these steps:
-
-    ```bash
-   git clone [https://github.com/your-username/iceguard-ai.git](https://github.com/your-username/iceguard-ai.git)
-   cd iceguard-ai
-
-Virtual Env:
-
-Bash
-python -m venv venv
-source venv/bin/activate  #   win  : venv\Scripts\activate
- 
-
-Bash
-pip install -r requirements.json
------------
-
-## Testing Strategy
-
-IceGuard AI follows the **Testing Pyramid** methodology to ensure system reliability and data integrity:
-
-1. **Unit Tests (Base):** Validates individual functions in `preprocessing.py` and `schema.py`. We ensure math and data contracts (Pydantic) are 100% accurate.
-2. **Integration Tests (Middle):** Verifies the flow between modules (e.g., ensuring `detection_engine` output correctly feeds into the `llm_reporting` module).
-3. **End-to-End (E2E) Tests (Top):** Manual and automated runs of `app.py` to verify the user dashboard displays maps and reports correctly.

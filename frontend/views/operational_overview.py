@@ -1,4 +1,27 @@
 import streamlit as st
+
+
+def show_view() -> None:
+    """Display a high-level operational overview for IceGuard AI."""
+    st.title("Operational Overview")
+
+    st.subheader("Area of Interest")
+    aoi = st.session_state.get("selected_aoi", "Grand Banks, NL")
+    analysis_date = st.session_state.get("analysis_date", None)
+
+    st.write(f"**AOI**: {aoi}")
+    if analysis_date is not None:
+        st.write(f"**Analysis Date**: {analysis_date}")
+
+    st.subheader("Latest Detections")
+    detections = st.session_state.get("detections", [])
+    if not detections:
+        st.info("No iceberg detections available yet. Use 'Sync Satellite Data' to ingest and analyze SAR scenes.")
+    else:
+        st.write(f"Total detections: **{len(detections)}**")
+        st.json(detections)
+
+import streamlit as st
 from frontend.components.map_viewer import render_iceberg_map
 
 

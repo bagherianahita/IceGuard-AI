@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable, List, Tuple
+from typing import Iterable, List, Optional, Tuple
 
 import numpy as np
 import rasterio
@@ -54,9 +54,18 @@ class GeographicBBox:
     max_lon: float
     max_lat: float
 
-    def to_sentinelhub_bbox(self) -> BBox:
-        return BBox(bbox=(self.min_lon, self.min_lat, self.max_lon, self.max_lat), crs=CRS.WGS84)
+from sentinelhub import BBox, CRS
 
+# داخل کلاس GeographicBBox یا جایی که bbox ساخته می‌شود:
+def to_sentinelhub_bbox(self):
+    # ۱. ابتدا bbox را در سیستم مختصات جغرافیایی بسازید
+    wgs84_bbox = BBox(
+        bbox=(self.min_lon, self.min_lat, self.max_lon, self.max_lat), 
+        crs=CRS.WGS84
+    )
+    # ۲. آن را به سیستم تصویر (Projected) مثل Web Mercator تبدیل کنید
+    # این باعث می‌شود واحد رزولوشن شما (مثلاً 40) به درستی "متر" محاسبه شود
+    return wgs84_bbox.transform(CRS.POP_WEB)
 
 # Approximate WGS84 bounding box for the Grand Banks of Newfoundland
 GRAND_BANKS_BBOX = GeographicBBox(
@@ -76,12 +85,19 @@ def _create_sh_config() -> SHConfig:
 
     Expects credentials to be provided via the standard Sentinel Hub configuration
     mechanisms (environment variables, config file, etc.).
+
+    Raises:
+        Sentinel1IngestionError: If mandatory Sentinel Hub credentials are missing.
     """
     config = SHConfig()
     if not config.sh_client_id or not config.sh_client_secret:
-        LOGGER.warning(
+        LOGGER.error(
             "Sentinel Hub client credentials are not configured. "
-            "Make sure SH_CLIENT_ID and SH_CLIENT_SECRET are set."
+            "Set SH_CLIENT_ID and SH_CLIENT_SECRET (or equivalent) before running ingestion."
+        )
+        raise Sentinel1IngestionError(
+            "Sentinel Hub client credentials are missing. "
+            "Set SH_CLIENT_ID and SH_CLIENT_SECRET in the environment or configuration."
         )
     return config
 
@@ -90,6 +106,7 @@ def fetch_sentinel1_backscatter(
     bbox: GeographicBBox,
     time_interval: Tuple[str, str],
     resolution_m: int = 40,
+    config: Optional[SHConfig] = None,
 ) -> np.ndarray:
     """Fetch Sentinel-1 IW backscatter (VV, VH) for a given bounding box.
 
@@ -97,6 +114,8 @@ def fetch_sentinel1_backscatter(
         bbox: Geographic bounding box (WGS84).
         time_interval: Start and end date in ISO format, e.g. ("2025-01-01", "2025-01-10").
         resolution_m: Target ground resolution in meters.
+        config: Optional Sentinel Hub configuration. If not provided, a default
+            configuration is created via `_create_sh_config()`.
 
     Returns:
         A NumPy array of shape (height, width, 2) with VV and VH backscatter.
@@ -104,24 +123,26 @@ def fetch_sentinel1_backscatter(
     Raises:
         Sentinel1IngestionError: If the request to Sentinel Hub fails.
     """
-    sh_config = _create_sh_config()
+    sh_config = config or _create_sh_config()
     sh_bbox = bbox.to_sentinelhub_bbox()
 
     LOGGER.info("Requesting Sentinel-1 IW backscatter for bbox=%s and interval=%s", bbox, time_interval)
 
     request = SentinelHubRequest(
-        evalscript=EVALSCRIPT_S1_IW,
-        input_data=[
-            SentinelHubRequest.InputData(
-                data_collection=DataCollection.SENTINEL1_IW,
-                time_interval=time_interval,
-            )
-        ],
-        responses=[SentinelHubRequest.OutputResponse("default", MimeType.TIFF)],
-        bbox=sh_bbox,
-        resolution=(resolution_m, resolution_m),
-        config=sh_config,
-    )
+    evalscript=EVALSCRIPT_S1_IW,
+    input_data=[
+        SentinelHubRequest.input_data(
+            data_collection=DataCollection.SENTINEL1_IW,
+            time_interval=time_interval,
+        )
+    ],
+    responses=[
+        SentinelHubRequest.output_response("default", MimeType.TIFF)
+    ],
+    bbox=sh_bbox,
+    resolution=(resolution_m, resolution_m),
+    config=sh_config,
+)
 
     try:
         data_stack: List[np.ndarray] = request.get_data()
@@ -148,8 +169,14 @@ def fetch_sentinel1_backscatter(
 def normalize_backscatter(backscatter: np.ndarray) -> np.ndarray:
     """Normalize Sentinel-1 backscatter to [0, 1] per band in dB space.
 
+    Args:
+        backscatter: Array of shape (height, width, bands) containing **linear**
+            sigma0 power values (e.g., as returned by the Sentinel Hub evalscript
+            with units="SIGMA0_ELLIPSOID"). This function will convert these
+            linear power values to decibels internally before normalization.
+
     This function:
-    - Converts sigma0 values to decibels.
+    - Converts linear sigma0 values to decibels.
     - Uses robust percentile-based scaling (2nd–98th percentile) per band.
     - Clips to [0, 1] for downstream visualization and ML pipelines.
     """

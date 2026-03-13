@@ -29,3 +29,5 @@ data/raw_samples/
 data/processed/
 *.log
 .venv/ 
+
+__pycache__

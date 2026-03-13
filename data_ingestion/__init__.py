@@ -6,17 +6,35 @@ Responsible for:
 - Downloading and caching Sentinel-1 SAR imagery.
 - Pre-processing scenes into analysis-ready tiles.
 """
-"""
-Data Ingestion Module: Responsible for Sentinel-1 SAR acquisition and preprocessing.
-"""
-from .sentinel_client import SentinelClient
-from .preprocessing import process_sar_image, apply_speckle_filter
+
+from .sentinel1_ingestion import (
+    GeographicBBox,
+    GRAND_BANKS_BBOX,
+    Sentinel1IngestionError,
+    fetch_sentinel1_backscatter,
+    normalize_backscatter,
+    save_backscatter_as_geotiff,
+    configure_logging,
+)
+from .preprocessing import (
+    apply_speckle_filter,
+    land_sea_mask,
+    calibrate_radiometry,
+    process_sar_image,
+)
 from .catalog import SceneCatalog
 
-# We define what is available when someone types 'from data_ingestion import *'
 __all__ = [
-    "SentinelClient",
-    "process_sar_image",
+    "GeographicBBox",
+    "GRAND_BANKS_BBOX",
+    "Sentinel1IngestionError",
+    "fetch_sentinel1_backscatter",
+    "normalize_backscatter",
+    "save_backscatter_as_geotiff",
+    "configure_logging",
     "apply_speckle_filter",
-    "SceneCatalog"
+    "land_sea_mask",
+    "calibrate_radiometry",
+    "process_sar_image",
+    "SceneCatalog",
 ]
