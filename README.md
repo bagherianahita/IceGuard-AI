@@ -2,7 +2,7 @@
 
 IceGuard AI is a geospatial intelligence platform for **automatic iceberg detection and maritime safety reporting**. It is designed to ingest Sentinel‑1 SAR data, detect icebergs with a detection engine, and use an LLM to generate **actionable risk assessments** for maritime stakeholders (shipping, offshore operations, search and rescue).
 
-The project structure and architecture below are intentionally modular to support a clear **Thinking → Prototyping → Production** evolution, and to align with C‑CORE’s strengths in Remote Sensing, AI, and operational systems.
+The project structure and architecture below are intentionally modular to support a clear **Thinking → Prototyping → Production** evolution.
 
 ---
 
