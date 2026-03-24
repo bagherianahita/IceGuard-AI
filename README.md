@@ -14,8 +14,6 @@ The project structure and architecture below are intentionally modular to suppor
 
 
 I built this as a Modular Monolith to ensure rapid iteration and easy debugging during the prototype phase. 
-However, I will designe the data contracts (GeoJSON/Parquet) so that we could easily migrate the Detection Engine to a Microservice or an Event-Driven pipeline once we need to scale for real-time North Atlantic monitoring.
-
 
 
 Core questions IceGuard AI aims to answer:
@@ -55,28 +53,28 @@ Intended top‑level layout:
   - `__init__.py` – Package marker and shared types/interfaces.
   - `sentinel_client.py` – Thin wrapper around the `sentinelhub` Python package for querying and downloading Sentinel‑1 SAR scenes.
   - `preprocessing.py` – Radiometric calibration, speckle filtering, incidence angle normalization, land/sea masking, and tiling logic.
-  - (Future) `catalog.py` – Scene catalog abstraction (search by AOI, time range, orbit, polarization, etc.) plus local cache management.
+  -   `catalog.py` – Scene catalog abstraction (search by AOI, time range, orbit, polarization, etc.) plus local cache management.
 
 - **`detection_engine/`**
   - `__init__.py` – Package marker and core interfaces for detectors.
-  - (Future) `models/` – Model definitions (e.g., classical CFAR‑based detectors, CNN/UNet/Transformer models, or hybrid approaches).
-  - (Future) `pipelines.py` – End‑to‑end detection pipelines (load tiles → run detector → post‑process → generate iceberg objects).
-  - (Future) `postprocessing.py` – Clustering, false positive reduction, and conversion to vector geometries (e.g., iceberg polygons or centroids).
+  -   `models/` – Model definitions (e.g., classical CFAR‑based detectors, CNN/UNet/Transformer models, or hybrid approaches).
+  -   `pipelines.py` – End‑to‑end detection pipelines (load tiles → run detector → post‑process → generate iceberg objects).
+  -   `postprocessing.py` – Clustering, false positive reduction, and conversion to vector geometries (e.g., iceberg polygons or centroids).
 
 - **`llm_reporting/`**
   - `__init__.py` – Package marker and interfaces for report generation.
-  - (Future) `schema.py` – Pydantic models describing iceberg detections, region summaries, and report templates.
-  - (Future) `prompts.py` – Prompt templates to condition the LLM on maritime safety context, IMO guidelines, and client‑specific style.
-  - (Future) `reporting_chain.py` – LangChain‑based chains or agents that:
+  -   `schema.py` – Pydantic models describing iceberg detections, region summaries, and report templates.
+  -   `prompts.py` – Prompt templates to condition the LLM on maritime safety context, IMO guidelines, and client‑specific style.
+  -   `reporting_chain.py` – LangChain‑based chains or agents that:
     - Ingest detections, routes, and contextual layers.
     - Retrieve historical observations and relevant domain knowledge.
     - Generate structured, auditable safety reports.
 
 - **`frontend/`**
   - `app.py` – Streamlit entry point for the IceGuard AI UI.
-  - (Future) `views/` – Page‑level components (e.g., “Operational Overview”, “Scene Explorer”, “Report Builder”).
-  - (Future) `components/` – Reusable widgets (map viewers, time sliders, detection summary panels, etc.).
-  - (Future) `state.py` – Simple app‑level state handling (e.g., selected AOI, time range, vessel route).
+  -   `views/` – Page‑level components (e.g., “Operational Overview”, “Scene Explorer”, “Report Builder”).
+  -   `components/` – Reusable widgets (map viewers, time sliders, detection summary panels, etc.).
+  -   `state.py` – Simple app‑level state handling (e.g., selected AOI, time range, vessel route).
 
   
 
@@ -133,7 +131,7 @@ Intended top‑level layout:
 
 - **AI & LLM Reporting**
   - `langchain` – Orchestration layer for LLM calls, retrieval, and chains.
-  - (Future) Provider‑specific LLM SDKs (e.g., OpenAI, Anthropic, Azure, etc.).
+  -   Provider‑specific LLM SDKs (e.g., OpenAI, Anthropic, Azure, etc.).
 
 - **Frontend & Delivery**
   - `streamlit` – Streamlit-based UI for operators and analysts.
@@ -179,3 +177,5 @@ streamlit run frontend/app.py
 - Add continuous monitoring and alerting (email/SMS/webhooks) for high‑risk detections.
 - Introduce model evaluation dashboards (precision/recall vs. validated ground truth).
 - Support batch and near‑real‑time modes to match operational constraints.
+- designe the data contracts (GeoJSON/Parquet) so that we could easily migrate the Detection Engine to a Microservice or an Event-Driven pipeline once we need to scale for real-time North Atlantic monitoring.
+
