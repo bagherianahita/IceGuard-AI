@@ -13,10 +13,7 @@ def show_view() -> None:
 
     detections = st.session_state.get("detections", [])
     if not detections:
-        st.info(
-            "Demo data is pre-loaded on first visit. Click **Sync Satellite Data** in the sidebar "
-            "to re-run the SAR pipeline (mock mode — no API keys required)."
-        )
+        st.info("Click **Sync Satellite Data** in the sidebar to run the mock SAR pipeline.")
         return
 
     render_stats(detections)
