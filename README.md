@@ -161,14 +161,14 @@ Intended top‑level layout:
 
 ---
 
-## Getting Started
+## Quick start (employers — no API keys)
 
 ```bash
 pip install -r requirements.txt
 streamlit run frontend/app.py
 ```
 
-Demo iceberg map and safety report load automatically. Click **Sync Satellite Data** to re-run the mock SAR pipeline (no API keys required).
+Demo iceberg map and safety report load automatically. Click **Sync Satellite Data** to re-run the mock SAR pipeline.
 
 ---
 
