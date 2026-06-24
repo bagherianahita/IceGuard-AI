@@ -170,6 +170,10 @@ streamlit run frontend/app.py
 
 Demo iceberg map and safety report load automatically. Click **Sync Satellite Data** to re-run the mock SAR pipeline.
 
+| | URL |
+|---|-----|
+| **Web UI** | http://localhost:8501 |
+
 ---
 
 ## Roadmap Ideas
