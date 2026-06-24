@@ -27,6 +27,26 @@ Core questions IceGuard AI aims to answer:
 
 ## High‑Level Architecture
 
+```
+┌─────────────────┐   Sentinel-1 SAR    ┌──────────────────┐
+│ data_ingestion/ │ ◄────────────────── │  Sentinel Hub    │
+│ sentinel1_*     │                     └──────────────────┘
+└────────┬────────┘
+         │ pre-processed tiles
+         ▼
+┌─────────────────┐   GeoJSON detections ┌──────────────────┐
+│ detection_engine│ ───────────────────► │ llm_reporting/   │
+│ pipelines       │                      │ maritime reports │
+└────────┬────────┘                      └────────┬─────────┘
+         │                                         │
+         └─────────────────┬───────────────────────┘
+                           ▼
+                  ┌─────────────────┐
+                  │ frontend/       │
+                  │ Streamlit UI    │
+                  └─────────────────┘
+```
+
 At a high level, IceGuard AI is organized into four main components:
 
 - **`data_ingestion/`** – Acquire, cache, and pre‑process Sentinel‑1 SAR data.
@@ -51,14 +71,14 @@ Intended top‑level layout:
 
 - **`data_ingestion/`**
   - `__init__.py` – Package marker and shared types/interfaces.
-  - `sentinel_client.py` – Thin wrapper around the `sentinelhub` Python package for querying and downloading Sentinel‑1 SAR scenes.
+  - `sentinel1_ingestion.py` – Wrapper around `sentinelhub` for querying and downloading Sentinel‑1 SAR scenes.
   - `preprocessing.py` – Radiometric calibration, speckle filtering, incidence angle normalization, land/sea masking, and tiling logic.
   -   `catalog.py` – Scene catalog abstraction (search by AOI, time range, orbit, polarization, etc.) plus local cache management.
 
 - **`detection_engine/`**
   - `__init__.py` – Package marker and core interfaces for detectors.
   -   `models/` – Model definitions (e.g., classical CFAR‑based detectors, CNN/UNet/Transformer models, or hybrid approaches).
-  -   `pipelines.py` – End‑to‑end detection pipelines (load tiles → run detector → post‑process → generate iceberg objects).
+  - `pipelines` – End‑to‑end detection pipelines (load tiles → run detector → post‑process → generate iceberg objects).
   -   `postprocessing.py` – Clustering, false positive reduction, and conversion to vector geometries (e.g., iceberg polygons or centroids).
 
 - **`llm_reporting/`**
@@ -177,5 +197,11 @@ streamlit run frontend/app.py
 - Add continuous monitoring and alerting (email/SMS/webhooks) for high‑risk detections.
 - Introduce model evaluation dashboards (precision/recall vs. validated ground truth).
 - Support batch and near‑real‑time modes to match operational constraints.
-- designe the data contracts (GeoJSON/Parquet) so that we could easily migrate the Detection Engine to a Microservice or an Event-Driven pipeline once we need to scale for real-time North Atlantic monitoring.
+- Design data contracts (GeoJSON/Parquet) so detection can migrate to microservices at scale.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
 
