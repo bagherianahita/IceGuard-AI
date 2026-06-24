@@ -170,18 +170,22 @@ def run_pipeline_for_aoi(
             "moderate swell, and near-freezing air temperatures."
         )
 
-        if not _has_openai_api_key():
-            LOGGER.warning(
-                "OPENAI_API_KEY is not set. Skipping LLM advisory generation for this run."
-            )
-            report = None
-        else:
-            payload = {
-                "iceberg_coordinates": iceberg_coordinates,
-                "size_estimate": size_estimate,
-                "current_weather_conditions": weather_description,
-            }
+        payload = {
+            "iceberg_coordinates": iceberg_coordinates,
+            "size_estimate": size_estimate,
+            "current_weather_conditions": weather_description,
+        }
 
+        if not _has_openai_api_key():
+            LOGGER.info("OPENAI_API_KEY not set — using deterministic demo maritime report.")
+            from llm_reporting.demo_report import generate_demo_maritime_report
+
+            report = generate_demo_maritime_report(
+                iceberg_coordinates=iceberg_coordinates,
+                size_estimate=size_estimate,
+                current_weather_conditions=weather_description,
+            )
+        else:
             try:
                 report = _run_llm_with_cache(payload)
             except MaritimeSafetyAdvisoryError:

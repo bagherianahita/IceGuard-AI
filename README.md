@@ -161,33 +161,14 @@ Intended top‑level layout:
 
 ---
 
-## Getting Started 
-
-1. **Environment setup**
-   - Create and activate a Python virtual environment (e.g., `python -m venv .venv`).
-   - Install dependencies:
+## Getting Started
 
 ```bash
 pip install -r requirements.txt
-```
-
-2. **Configuration**
-   - Populate `config.yaml` or a `.env` file with:
-     - Sentinel Hub credentials.
-     - LLM provider API keys.
-     - Storage locations / buckets.
-   - Avoid committing real secrets to version control; prefer environment variables or a secrets manager.
-
-3. **Run the Streamlit frontend**
-
-```bash
 streamlit run frontend/app.py
 ```
 
-4. **Next steps**
-   - Implement the Sentinel‑1 ingestion pipeline in `data_ingestion/`.
-   - Prototype a baseline detection pipeline in `detection_engine/` (e.g., CFAR + rule‑based post‑processing).
-   - Design reporting schemas and prompts in `llm_reporting/` and wire them into the Streamlit app.
+Demo iceberg map and safety report load automatically. Click **Sync Satellite Data** to re-run the mock SAR pipeline (no API keys required).
 
 ---
 

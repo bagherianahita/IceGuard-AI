@@ -7,6 +7,8 @@ rasterio==1.4.3
 scipy==1.17.1
 
 streamlit==1.54.0
+folium>=0.15.0
+streamlit-folium>=0.18.0
 python-dotenv==1.2.2
 requests==2.32.5
 

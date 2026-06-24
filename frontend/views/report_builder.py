@@ -2,47 +2,30 @@ import streamlit as st
 
 
 def show_view() -> None:
-    """Display the maritime safety report view."""
+    """Maritime safety report from pipeline or demo fallback."""
     st.title("Maritime Safety Report")
 
     report = st.session_state.get("report")
     if report is None:
-        st.info("No safety report has been generated yet. Use 'Sync Satellite Data' to run the analysis.")
+        st.info("No report yet. Use **Sync Satellite Data** in the sidebar.")
         return
 
-    st.subheader("Risk Level")
-    risk_level = report.get("risk_level", "N/A")
-    st.write(f"**Risk Level**: {risk_level}")
+    risk = report.get("risk_level", "N/A")
+    st.metric("Risk level", str(risk).upper())
 
-    narrative = report.get("summary") or report.get("narrative_summary")
+    narrative = report.get("narrative_summary") or report.get("summary")
     if narrative:
         st.subheader("Summary")
         st.write(narrative)
 
     actions = report.get("recommended_actions", [])
     if actions:
-        st.subheader("Recommended Actions")
+        st.subheader("Recommended actions")
         for action in actions:
             st.markdown(f"- {action}")
 
-import streamlit as st
-
-def show_view():
-    st.title("📝 Maritime Safety Report")
-    
-    if st.session_state.report:
-        report = st.session_state.report
-        
-        st.error(f"⚠️ RISK LEVEL: {report['risk_level'].upper()}")
-        
-        with st.expander("See Narrative Summary", expanded=True):
-            st.write(report['summary'])
-            
-        st.subheader("Recommended Actions")
-        for action in report['recommended_actions']:
-            st.success(f"✅ {action}")
-            
-        # Download button for professional feel
-        st.download_button("Download PDF Report", "Sample Content", "report.pdf")
-    else:
-        st.info("No report generated yet. Run the analysis to see AI insights.")
+    limits = report.get("assumptions_and_limitations", [])
+    if limits:
+        with st.expander("Assumptions & limitations"):
+            for item in limits:
+                st.markdown(f"- {item}")

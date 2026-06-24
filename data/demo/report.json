@@ -1,0 +1,18 @@
+{
+  "risk_level": "HIGH",
+  "narrative_summary": "Four iceberg candidates detected within the Grand Banks AOI under typical North Atlantic spring conditions. Elevated navigational risk for commercial traffic along the primary shipping lane.",
+  "recommended_actions": [
+    "Reduce speed to minimum safe maneuvering speed.",
+    "Post additional ice watch on bridge wings.",
+    "Notify MCTS of iceberg cluster positions.",
+    "Consider routing 20 NM south of the primary detection cluster."
+  ],
+  "assumptions_and_limitations": [
+    "Demo mode — deterministic report (no live LLM).",
+    "SAR detections from mock/rule-based pipeline."
+  ],
+  "coordinates_used_verbatim": [
+    {"lat": 47.52, "lon": -52.71},
+    {"lat": 47.48, "lon": -52.65}
+  ]
+}

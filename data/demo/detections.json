@@ -1,0 +1,6 @@
+[
+  {"iceberg_id": "ice_001", "latitude": 47.52, "longitude": -52.71, "confidence": 0.94, "size_sq_m": 1800},
+  {"iceberg_id": "ice_002", "latitude": 47.48, "longitude": -52.65, "confidence": 0.88, "size_sq_m": 920},
+  {"iceberg_id": "ice_003", "latitude": 47.55, "longitude": -52.80, "confidence": 0.91, "size_sq_m": 2100},
+  {"iceberg_id": "ice_004", "latitude": 47.46, "longitude": -52.58, "confidence": 0.76, "size_sq_m": 640}
+]
