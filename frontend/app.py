@@ -1,5 +1,13 @@
 import streamlit as st
 
+import sys
+from pathlib import Path
+
+# Make repo root importable when running `streamlit run frontend/app.py`.
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
 from frontend.state import init_state
 from frontend.views import operational_overview, report_builder
 from main import run_pipeline_for_aoi
