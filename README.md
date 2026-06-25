@@ -1,4 +1,4 @@
-## IceGuard AI – Geospatial Iceberg Detection & Maritime Risk Intelligence
+﻿## IceGuard AI – Geospatial Iceberg Detection & Maritime Risk Intelligence
 
 IceGuard AI is a geospatial intelligence platform for **automatic iceberg detection and maritime safety reporting**. It is designed to ingest Sentinel‑1 SAR data, detect icebergs with a detection engine, and use an LLM to generate **actionable risk assessments** for maritime stakeholders (shipping, offshore operations, search and rescue).
 
@@ -163,7 +163,7 @@ Intended top‑level layout:
 
 ---
 
-## Quick start (employers — no API keys)
+## Quick start
 
 ```bash
 pip install -r requirements.txt
